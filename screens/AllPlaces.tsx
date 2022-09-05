@@ -1,11 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import PlacesList from '../components/Places/PlacesList'
 
-export default function AllPlace() {
+export default function AllPlaces() {
   return (
-    <View>
-      <Text>AllPlace</Text>
-    </View>
+    <PlacesList />
   )
 }
 
