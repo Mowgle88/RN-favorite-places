@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-export default function AllPlace() {
+export default function AllPlaces() {
   return (
     <View>
       <Text>AllPlace</Text>
