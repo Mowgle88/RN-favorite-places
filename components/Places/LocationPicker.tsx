@@ -1,21 +1,35 @@
 import { Alert, Image, StyleSheet, Text, View } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getCurrentPositionAsync, useForegroundPermissions, PermissionStatus } from 'expo-location';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import OutLinedButton from '../UI/OutLinedButton';
 import { Colors } from '../../constants/colors';
 import { getMapPreview } from '../../util/location';
-import { useNavigation } from '@react-navigation/native';
+import { RouteProp, useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
 import { RootStackParamList } from '../../App';
 
 type MapScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Map'>;
+type MapScreenRouteProp = RouteProp<RootStackParamList, 'AllPlaces'>;
 
 export default function LocationPicker() {
   const [pickedLocation, setPickedLocation] = useState<{ lat: number, lng: number }>();
+  const isFocused = useIsFocused();
 
   const [locationPermissionInformation, requestPermission] = useForegroundPermissions();
+
   const navigation = useNavigation<MapScreenNavigationProp>();
+  const route = useRoute<MapScreenRouteProp>();
+
+  useEffect(() => {
+    if (isFocused && route.params) {
+      const mapPickedLocation = {
+        lat: route.params.pickedLat,
+        lng: route.params.pickedLng
+      };
+      setPickedLocation(mapPickedLocation);
+    }
+  }, [route, isFocused]);
 
   async function verifyPermissions() {
     if (locationPermissionInformation!.status === PermissionStatus.UNDETERMINED) {
@@ -51,19 +65,19 @@ export default function LocationPicker() {
     })
   }
 
+  function pickOnMapHandler() {
+    navigation.navigate('Map');
+  }
+
   let locationPreview = <Text>No location taken yet.</Text>;
 
   if (pickedLocation) {
     locationPreview = (
       <Image
-        style={styles.mapPreviewImage}
+        style={styles.image}
         source={{ uri: getMapPreview(pickedLocation.lat, pickedLocation.lng) }}
       />
     )
-  }
-
-  function pickOnMapHandler() {
-    navigation.navigate('Map');
   }
 
   return (
@@ -94,7 +108,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center'
   },
-  mapPreviewImage: {
+  image: {
     width: '100%',
     height: '100%',
     borderRadius: 4
