@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   text: {
     textAlign: 'center',
     fontSize: 16,
-    backgroundColor: Colors.primary50
+    color: Colors.primary50
   },
   pressed: {
     opacity: 0.7,
