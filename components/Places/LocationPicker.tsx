@@ -1,15 +1,21 @@
 import { Alert, Image, StyleSheet, Text, View } from 'react-native';
 import React, { useState } from 'react';
 import { getCurrentPositionAsync, useForegroundPermissions, PermissionStatus } from 'expo-location';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import OutLinedButton from '../UI/OutLinedButton';
 import { Colors } from '../../constants/colors';
 import { getMapPreview } from '../../util/location';
+import { useNavigation } from '@react-navigation/native';
+import { RootStackParamList } from '../../App';
+
+type MapScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Map'>;
 
 export default function LocationPicker() {
   const [pickedLocation, setPickedLocation] = useState<{ lat: number, lng: number }>();
 
   const [locationPermissionInformation, requestPermission] = useForegroundPermissions();
+  const navigation = useNavigation<MapScreenNavigationProp>();
 
   async function verifyPermissions() {
     if (locationPermissionInformation!.status === PermissionStatus.UNDETERMINED) {
@@ -56,7 +62,9 @@ export default function LocationPicker() {
     )
   }
 
-  function pickOnMapHandler() { }
+  function pickOnMapHandler() {
+    navigation.navigate('Map');
+  }
 
   return (
     <View>
