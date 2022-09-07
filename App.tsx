@@ -11,9 +11,9 @@ import { Colors } from './constants/colors';
 import Map from './screens/Map';
 
 export type RootStackParamList = {
-  AllPlaces: undefined;
-  AddPlace: undefined;
-  Map: undefined;
+  AllPlaces: { pickedLat: number, pickedLng: number },
+  AddPlace: undefined,
+  Map: undefined,
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
