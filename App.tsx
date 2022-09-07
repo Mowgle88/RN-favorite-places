@@ -11,8 +11,8 @@ import { Colors } from './constants/colors';
 import Map from './screens/Map';
 
 export type RootStackParamList = {
-  AllPlaces: { pickedLat: number, pickedLng: number },
-  AddPlace: undefined,
+  AllPlaces: undefined,
+  AddPlace: { pickedLat: number, pickedLng: number },
   Map: undefined,
 };
 

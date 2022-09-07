@@ -25,7 +25,7 @@ export default function Map({ navigation }: MapProps) {
   }
 
   const savePickedLocationHandler = useCallback(() => {
-    navigation.navigate('AllPlaces', {
+    navigation.navigate('AddPlace', {
       pickedLat: selectedLocation!.lat,
       pickedLng: selectedLocation!.lng
     })

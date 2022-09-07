@@ -10,7 +10,7 @@ import { RouteProp, useIsFocused, useNavigation, useRoute } from '@react-navigat
 import { RootStackParamList } from '../../App';
 
 type MapScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Map'>;
-type MapScreenRouteProp = RouteProp<RootStackParamList, 'AllPlaces'>;
+type MapScreenRouteProp = RouteProp<RootStackParamList, 'AddPlace'>;
 
 export default function LocationPicker() {
   const [pickedLocation, setPickedLocation] = useState<{ lat: number, lng: number }>();

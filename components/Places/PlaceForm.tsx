@@ -13,7 +13,7 @@ export default function PlaceForm() {
 
   return (
     <ScrollView style={styles.form}>
-      <View style={styles.form}>
+      <View>
         <Text style={styles.label}>Title</Text>
         <TextInput style={styles.input} value={enteredTitle} onChangeText={ChangeTitleHandler} />
       </View>
