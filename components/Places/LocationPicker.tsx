@@ -5,12 +5,12 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import OutLinedButton from '../UI/OutLinedButton';
 import { Colors } from '../../constants/colors';
-import { getMapPreview } from '../../util/location';
+import { getAdress, getMapPreview } from '../../util/location';
 import { RouteProp, useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
 import { RootStackParamList } from '../../App';
 
 interface LocationPickerProps {
-  onPickLacation: (location: { lat: number, lng: number }) => void
+  onPickLacation: (location: { lat: number, lng: number, address: string }) => void
 }
 
 type MapScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Map'>;
@@ -36,7 +36,13 @@ export default function LocationPicker({ onPickLacation }: LocationPickerProps) 
   }, [route, isFocused]);
 
   useEffect(() => {
-    onPickLacation(pickedLocation!);
+    async function handleLOcation() {
+      if (pickedLocation) {
+        const address = await getAdress(pickedLocation.lat, pickedLocation.lng)
+        onPickLacation({ ...pickedLocation!, address: address });
+      }
+    }
+    handleLOcation();
   }, [pickedLocation, onPickLacation])
 
   async function verifyPermissions() {
