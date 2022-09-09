@@ -9,10 +9,14 @@ import { getMapPreview } from '../../util/location';
 import { RouteProp, useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
 import { RootStackParamList } from '../../App';
 
+interface LocationPickerProps {
+  onPickLacation: (location: { lat: number, lng: number }) => void
+}
+
 type MapScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Map'>;
 type MapScreenRouteProp = RouteProp<RootStackParamList, 'AddPlace'>;
 
-export default function LocationPicker() {
+export default function LocationPicker({ onPickLacation }: LocationPickerProps) {
   const [pickedLocation, setPickedLocation] = useState<{ lat: number, lng: number }>();
   const isFocused = useIsFocused();
 
@@ -30,6 +34,10 @@ export default function LocationPicker() {
       setPickedLocation(mapPickedLocation);
     }
   }, [route, isFocused]);
+
+  useEffect(() => {
+    onPickLacation(pickedLocation!);
+  }, [pickedLocation, onPickLacation])
 
   async function verifyPermissions() {
     if (locationPermissionInformation!.status === PermissionStatus.UNDETERMINED) {
