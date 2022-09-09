@@ -9,9 +9,10 @@ import AddPlace from './screens/AddPlace';
 import IconButton from './components/UI/IconButton';
 import { Colors } from './constants/colors';
 import Map from './screens/Map';
+import { Place } from './models/place';
 
 export type RootStackParamList = {
-  AllPlaces: undefined,
+  AllPlaces: { place: Place },
   AddPlace: { pickedLat: number, pickedLng: number },
   Map: undefined,
 };
