@@ -17,7 +17,7 @@ import PlaceDetails from './screens/PlaceDetails';
 export type RootStackParamList = {
   AllPlaces: undefined,
   AddPlace: { pickedLat: number, pickedLng: number },
-  Map: undefined,
+  Map: { initialLat: number, initialLng: number } | undefined,
   PlaceDetails: { placeId: string }
 };
 

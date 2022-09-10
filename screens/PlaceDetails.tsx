@@ -12,7 +12,12 @@ type PlaceDetailsProps = NativeStackScreenProps<RootStackParamList, 'PlaceDetail
 export default function PlaceDetails({ route, navigation }: PlaceDetailsProps) {
   const [fetchedPlace, setFetchedPlace] = useState<Place>();
 
-  function showOnMapHandler() { }
+  function showOnMapHandler() {
+    navigation.navigate('Map', {
+      initialLat: fetchedPlace!.location.lat,
+      initialLng: fetchedPlace!.location.lng,
+    });
+  }
 
   const selectedPlaceId = route.params.placeId;
 
@@ -22,7 +27,6 @@ export default function PlaceDetails({ route, navigation }: PlaceDetailsProps) {
       setFetchedPlace(place);
       navigation.setOptions({
         title: place.title,
-
       })
     }
 

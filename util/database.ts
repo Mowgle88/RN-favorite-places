@@ -2,6 +2,15 @@ import * as SQLite from 'expo-sqlite';
 import { SQLError, SQLStatementErrorCallback, SQLTransaction } from 'expo-sqlite';
 import { Place } from '../models/place';
 
+interface IDBData {
+  address: string,
+  id: string,
+  imageUri: string,
+  lat: number,
+  lng: number,
+  title: string
+}
+
 const database = SQLite.openDatabase('places.db');
 
 export function init() {
@@ -96,7 +105,18 @@ export function fetchPlaceDetails(id: string) {
         'SELECT * FROM places WHERE id = ?',
         [id],
         (_, result) => {
-          resolve(result.rows._array[0]);
+          const dbPlace: IDBData = result.rows._array[0];
+          const place = new Place(
+            dbPlace.title,
+            dbPlace.imageUri,
+            {
+              address: dbPlace.address,
+              lat: dbPlace.lat,
+              lng: dbPlace.lng,
+            },
+            dbPlace.id
+          )
+          resolve(place);
         },
         (_, error): any => {
           reject(error);

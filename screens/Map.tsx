@@ -7,17 +7,25 @@ import IconButton from '../components/UI/IconButton';
 
 type MapProps = NativeStackScreenProps<RootStackParamList, 'Map'>;
 
-export default function Map({ navigation }: MapProps) {
+export default function Map({ navigation, route }: MapProps) {
+  const initialLocation = route.params && {
+    lat: route.params.initialLat,
+    lng: route.params.initialLng,
+  };
+
   const [selectedLocation, setSelectedLocation] = useState<{ lat: number, lng: number }>();
 
   const region = {
-    latitude: 37.78,
-    longitude: -122.43,
+    latitude: initialLocation ? initialLocation.lat : 37.78,
+    longitude: initialLocation ? initialLocation.lng : -122.43,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   }
 
   function selectLocationHandler(event: MapEvent) {
+    if (initialLocation) {
+      return;
+    }
     const lat = event.nativeEvent.coordinate.latitude;
     const lng = event.nativeEvent.coordinate.longitude;
 
@@ -32,6 +40,10 @@ export default function Map({ navigation }: MapProps) {
   }, [navigation, selectedLocation])
 
   useLayoutEffect(() => {
+    if (initialLocation) {
+      return;
+    }
+
     navigation.setOptions({
       headerRight: ({ tintColor }) => (
         <IconButton
@@ -42,7 +54,7 @@ export default function Map({ navigation }: MapProps) {
           onPress={savePickedLocationHandler} />
       )
     })
-  }, [navigation, savePickedLocationHandler])
+  }, [navigation, savePickedLocationHandler, initialLocation])
 
   return (
     <MapView
