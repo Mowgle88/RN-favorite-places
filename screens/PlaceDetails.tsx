@@ -1,28 +1,48 @@
 import { ScrollView, StyleSheet, Text, View, Image } from 'react-native'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Colors } from '../constants/colors'
 import OutLinedButton from '../components/UI/OutLinedButton'
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../App';
+import { fetchPlaceDetails } from '../util/database';
+import { Place } from '../models/place';
 
 type PlaceDetailsProps = NativeStackScreenProps<RootStackParamList, 'PlaceDetails'>;
 
-export default function PlaceDetails({ route }: PlaceDetailsProps) {
-  function showOnMapHandler() {
+export default function PlaceDetails({ route, navigation }: PlaceDetailsProps) {
+  const [fetchedPlace, setFetchedPlace] = useState<Place>();
 
-  }
+  function showOnMapHandler() { }
 
   const selectedPlaceId = route.params.placeId;
 
   useEffect(() => {
+    async function loadPlaceData() {
+      const place = await fetchPlaceDetails(selectedPlaceId);
+      setFetchedPlace(place);
+      navigation.setOptions({
+        title: place.title,
 
+      })
+    }
+
+    loadPlaceData();
   }, [selectedPlaceId])
+
+  if (!fetchedPlace) {
+    return (
+      <View style={styles.fallback}>
+        <Text>Loading place data...</Text>
+      </View>
+    );
+  }
+
   return (
     <ScrollView>
-      <Image style={styles.image} />
+      <Image style={styles.image} source={{ uri: fetchedPlace.imageUri }} />
       <View style={styles.locationContainer}>
         <View style={styles.addressContainer}>
-          <Text style={styles.address}>ADDRESS</Text>
+          <Text style={styles.address}>{fetchedPlace.address}</Text>
         </View>
         <OutLinedButton icon="map" onPress={showOnMapHandler}>
           View on Map
