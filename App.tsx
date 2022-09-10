@@ -12,11 +12,13 @@ import { Colors } from './constants/colors';
 import Map from './screens/Map';
 import { Place } from './models/place';
 import { init } from './util/database';
+import PlaceDetails from './screens/PlaceDetails';
 
 export type RootStackParamList = {
   AllPlaces: undefined,
   AddPlace: { pickedLat: number, pickedLng: number },
   Map: undefined,
+  PlaceDetails: { placeId: string }
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -78,6 +80,7 @@ export default function App() {
               title: 'Add a new Place'
             }} />
           <Stack.Screen name="Map" component={Map} />
+          <Stack.Screen name="PlaceDetails" component={PlaceDetails} />
         </Stack.Navigator>
       </NavigationContainer>
     </>
