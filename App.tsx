@@ -14,7 +14,7 @@ import { Place } from './models/place';
 import { init } from './util/database';
 
 export type RootStackParamList = {
-  AllPlaces: { place: Place },
+  AllPlaces: undefined,
   AddPlace: { pickedLat: number, pickedLng: number },
   Map: undefined,
 };
