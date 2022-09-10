@@ -3,12 +3,24 @@ import React from 'react';
 import { Place } from '../../models/place';
 import PlaceItem from './PlaceItem';
 import { Colors } from '../../constants/colors';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../App';
 
 interface PlacesListProps {
   places: Place[]
 }
 
+type Props = NativeStackNavigationProp<RootStackParamList, 'PlaceDetails'>;
+
 export default function PlacesList({ places }: PlacesListProps) {
+  const navigation = useNavigation<Props>();
+
+  function selectPlaceHandler(id: string) {
+    navigation.navigate('PlaceDetails', {
+      placeId: id
+    })
+  }
 
   if (!places || places.length === 0) {
     return (
@@ -22,8 +34,8 @@ export default function PlacesList({ places }: PlacesListProps) {
     <FlatList
       style={styles.list}
       data={places}
-      renderItem={({ item }) => <PlaceItem place={item} onSelect={() => { }} />}
-      keyExtractor={(item) => item.id}
+      renderItem={({ item }) => <PlaceItem place={item} onSelect={selectPlaceHandler} />}
+      keyExtractor={(item) => item.id!}
     />
   );
 }
