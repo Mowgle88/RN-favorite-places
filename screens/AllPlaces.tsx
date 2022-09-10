@@ -5,6 +5,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../App';
 import { useIsFocused } from '@react-navigation/native';
 import { Place } from '../models/place';
+import { fetchPlaces } from '../util/database';
 
 type AllPlacesProps = NativeStackScreenProps<RootStackParamList, 'AllPlaces'>;
 
@@ -15,10 +16,15 @@ export default function AllPlaces({ route }: AllPlacesProps) {
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    if (isFocused && route.params) {
-      setloadedPlaces(curPlaces => [...curPlaces, route.params.place])
+    async function loadPlaces() {
+      const places = await fetchPlaces();
+      setloadedPlaces(places);
     }
-  }, [isFocused, route])
+    if (isFocused) {
+      loadPlaces();
+      // setloadedPlaces(curPlaces => [...curPlaces, route.params.place])
+    }
+  }, [isFocused])
 
   return (
     <PlacesList places={loadedPlaces} />

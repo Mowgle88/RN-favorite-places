@@ -36,13 +36,14 @@ export default function LocationPicker({ onPickLacation }: LocationPickerProps) 
   }, [route, isFocused]);
 
   useEffect(() => {
-    async function handleLOcation() {
+    async function handleLocation() {
       if (pickedLocation) {
-        const address = await getAdress(pickedLocation.lat, pickedLocation.lng)
-        onPickLacation({ ...pickedLocation!, address: address });
+        // const address = await getAdress(pickedLocation.lat, pickedLocation.lng);
+        // onPickLacation({ ...pickedLocation!, address: address });
+        onPickLacation({ lat: 37.78, lng: -122.43, address: 'something place' });
       }
     }
-    handleLOcation();
+    handleLocation();
   }, [pickedLocation, onPickLacation])
 
   async function verifyPermissions() {
@@ -63,7 +64,7 @@ export default function LocationPicker({ onPickLacation }: LocationPickerProps) 
     return true;
   }
 
-  async function getLocetionHandler() {
+  async function getLocationHandler() {
     const hasPermission = await verifyPermissions();
 
     if (!hasPermission) {
@@ -100,7 +101,7 @@ export default function LocationPicker({ onPickLacation }: LocationPickerProps) 
         {locationPreview}
       </View>
       <View style={styles.actions}>
-        <OutLinedButton icon={'location'} onPress={getLocetionHandler}>Locate User</OutLinedButton>
+        <OutLinedButton icon={'location'} onPress={getLocationHandler}>Locate User</OutLinedButton>
         <OutLinedButton icon={'map'} onPress={pickOnMapHandler}>Pick on Map</OutLinedButton>
       </View>
     </View>

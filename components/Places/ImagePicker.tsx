@@ -26,6 +26,8 @@ export default function ImagePicker({ onTakeImage }: ImagePickerProps) {
         'Insufficient Permissions!',
         'You need to grant camera permissions to use this app'
       );
+      setPickedImage('https://reactnative.dev/img/tiny_logo.png');
+      onTakeImage('https://reactnative.dev/img/tiny_logo.png');
       return false;
     }
 

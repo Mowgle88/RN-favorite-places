@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
+import * as SplashScreen from 'expo-splash-screen';
 
 import AllPlaces from './screens/AllPlaces';
 import AddPlace from './screens/AddPlace';
@@ -10,16 +11,43 @@ import IconButton from './components/UI/IconButton';
 import { Colors } from './constants/colors';
 import Map from './screens/Map';
 import { Place } from './models/place';
+import { init } from './util/database';
 
 export type RootStackParamList = {
-  AllPlaces: { place: Place },
+  AllPlaces: undefined,
   AddPlace: { pickedLat: number, pickedLng: number },
   Map: undefined,
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
+SplashScreen.preventAutoHideAsync();
+
 export default function App() {
+  const [dbInitialized, setDbInitialized] = useState(false);
+
+  useEffect(() => {
+    init()
+      .then(() => {
+        setDbInitialized(true);
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }, [])
+
+  const onLayoutRootView = useCallback(async () => {
+    if (dbInitialized) {
+      await SplashScreen.hideAsync();
+    }
+  }, [dbInitialized]);
+
+  if (!dbInitialized) {
+    return null;
+  }
+
+  onLayoutRootView();
+
   return (
     <>
       <StatusBar style="auto" />

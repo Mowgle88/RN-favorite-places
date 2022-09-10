@@ -1,15 +1,16 @@
 export class Place {
 
-  public id: string;
+  // public id: string;
   public address: string;
 
   constructor(
     public title: string,
     public imageUri: string,
     public location: { lat: number, lng: number, address: string },
+    public id?: string
   ) {
     this.address = location.address;
-    this.id = new Date().toString() + Math.random().toString();
+    // this.id = new Date().toString() + Math.random().toString();
   }
 
 }
