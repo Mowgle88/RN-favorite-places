@@ -1,4 +1,4 @@
-const GOOGLE_API_KEY = 'AIzaSyDaacMtuksa38Nr8SVkmdGB0tYaAQ_XztM';
+const GOOGLE_API_KEY = 'AIzaSyAPn4GTja0uNPR-DB6xgS1QRr540w3fB9g';
 
 interface IAdressResponse {
   results: IAdressResults[]
@@ -32,8 +32,8 @@ interface IlocationData {
 
 export function getMapPreview(lat: number, lng: number) {
   const imagePreviewUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=14&size=400x200&maptype=roadmap&markers=color:red%7Clabel:S%7C${lat},${lng}&key=${GOOGLE_API_KEY}`;
-  return imagePreviewUrl;
 
+  return imagePreviewUrl;
 }
 
 export async function getAdress(lat: number, lng: number) {
